@@ -1,9 +1,9 @@
 import { SignUpController } from './signup'
 import { InvalidParamError, MissingParamError, ServerError } from '../errors'
-import { EmailValidator, HttpRequest } from '../protocols'
+import { Controller, EmailValidator, HttpRequest } from '../protocols'
 
 interface SutTypes {
-  sut: SignUpController
+  sut: Controller
   emailValidatorStub: EmailValidator
 }
 
@@ -41,14 +41,16 @@ const buildHttpRequest = (key?: 'name' | 'email' | 'password' | 'passwordConfirm
 }
 
 const makeSut = (): SutTypes => {
-  class EmailValidatorStub implements EmailValidator {
-    isValid (email: string): boolean {
-      return true
+  function EmailValidatorStub (): EmailValidator {
+    return {
+      isValid (email: string): boolean {
+        return true
+      }
     }
   }
 
-  const emailValidatorStub = new EmailValidatorStub()
-  const sut = new SignUpController(emailValidatorStub)
+  const emailValidatorStub = EmailValidatorStub()
+  const sut = SignUpController(emailValidatorStub)
 
   return {
     sut,
