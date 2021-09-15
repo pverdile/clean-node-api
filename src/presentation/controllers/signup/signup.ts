@@ -1,5 +1,5 @@
 import { InvalidParamError, MissingParamError } from '../../errors'
-import { badRequest, serverError } from '../../helpers/httpHelpers'
+import { badRequest, serverError, ok } from '../../helpers/httpHelpers'
 import { AddAccount, Controller, EmailValidator, HttpRequest, HttpResponse } from './signupProtocols'
 
 export function SignUpController (emailValidator: EmailValidator, addAccount: AddAccount): Controller {
@@ -24,12 +24,11 @@ export function SignUpController (emailValidator: EmailValidator, addAccount: Ad
           return badRequest(new InvalidParamError('email'))
         }
 
-        return {
-          statusCode: 200,
-          body: addAccount.add({
-            name, email, password
-          })
-        }
+        const account = addAccount.add({
+          name, email, password
+        })
+
+        return ok(account)
       } catch (error) {
         return serverError()
       }
