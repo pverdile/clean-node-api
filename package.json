@@ -1,0 +1,7 @@
+{
+  "name": "clean-node-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Pietro Verdile <pietro.verdile@visto.global>",
+  "license": "MIT"
+}
