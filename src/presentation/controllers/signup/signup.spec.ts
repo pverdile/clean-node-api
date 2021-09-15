@@ -1,8 +1,6 @@
 import { SignUpController } from './signup'
-import { InvalidParamError, MissingParamError, ServerError } from '../errors'
-import { Controller, EmailValidator, HttpRequest } from '../protocols'
-import { AddAccount, AddAccountModel } from '../../domain/usecases/addAccount'
-import { AccountModel } from '../../domain/models/account'
+import { InvalidParamError, MissingParamError, ServerError } from '../../errors'
+import { HttpRequest, EmailValidator, AddAccount, AddAccountModel, AccountModel, Controller } from './signupProtocols'
 
 const buildHttpRequest = (key?: 'name' | 'email' | 'password' | 'passwordConfirmation' | Record<string, string>): HttpRequest => {
   const defaultBody = {
