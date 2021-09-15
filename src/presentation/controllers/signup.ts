@@ -13,11 +13,13 @@ export function SignUpController (emailValidator: EmailValidator): Controller {
           }
         }
 
-        if (httpRequest.body.password !== httpRequest.body.passwordConfirmation) {
+        const { email, password, passwordConfirmation } = httpRequest.body
+
+        if (password !== passwordConfirmation) {
           return badRequest(new InvalidParamError('passwordConfirmation'))
         }
 
-        const isValid = emailValidator.isValid(httpRequest.body.email)
+        const isValid = emailValidator.isValid(email)
         if (!isValid) {
           return badRequest(new InvalidParamError('email'))
         }
