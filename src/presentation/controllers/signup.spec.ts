@@ -1,11 +1,8 @@
 import { SignUpController } from './signup'
 import { InvalidParamError, MissingParamError, ServerError } from '../errors'
 import { Controller, EmailValidator, HttpRequest } from '../protocols'
-
-interface SutTypes {
-  sut: Controller
-  emailValidatorStub: EmailValidator
-}
+import { AddAccount, AddAccountModel } from '../../domain/usecases/addAccount'
+import { AccountModel } from '../../domain/models/account'
 
 const buildHttpRequest = (key?: 'name' | 'email' | 'password' | 'passwordConfirmation' | Record<string, string>): HttpRequest => {
   const defaultBody = {
@@ -52,25 +49,44 @@ const makeEmailValidator = (): EmailValidator => {
   return EmailValidatorStub()
 }
 
+const makeAddAccount = (): AddAccount => {
+  function AddAccountStub (): AddAccount {
+    return {
+      add (account: AddAccountModel): AccountModel {
+        const fakeAccount = {
+          id: 'valid_id',
+          name: 'valid_name',
+          email: 'valid_email@mail.com',
+          password: 'valid_password'
+        }
+
+        return fakeAccount
+      }
+    }
+  }
+
+  return AddAccountStub()
+}
+
+interface SutTypes {
+  sut: Controller
+  emailValidatorStub: EmailValidator
+  addAccountStub: AddAccount
+}
+
 const makeSut = (): SutTypes => {
   const emailValidatorStub = makeEmailValidator()
-  const sut = SignUpController(emailValidatorStub)
+  const addAccountStub = makeAddAccount()
+  const sut = SignUpController(emailValidatorStub, addAccountStub)
 
   return {
     sut,
-    emailValidatorStub
+    emailValidatorStub,
+    addAccountStub
   }
 }
 
 describe('SignUp Controller', () => {
-  test('should return 200 if body is ok', () => {
-    const { sut } = makeSut()
-    const httpRequest = buildHttpRequest()
-    const httpResponse = sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(200)
-    expect(httpResponse.body).toBe('love')
-  })
-
   test('should return 400 if no name is provided', () => {
     const { sut } = makeSut()
     const httpRequest = buildHttpRequest('name')
@@ -143,5 +159,14 @@ describe('SignUp Controller', () => {
 
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
+  })
+
+  test('should call AddAccount with correct values', () => {
+    const { sut, addAccountStub } = makeSut()
+    const addSpy = jest.spyOn(addAccountStub, 'add')
+    const httpRequest = buildHttpRequest()
+    sut.handle(httpRequest)
+
+    expect(addSpy).toHaveBeenCalledWith(buildHttpRequest('passwordConfirmation').body)
   })
 })
