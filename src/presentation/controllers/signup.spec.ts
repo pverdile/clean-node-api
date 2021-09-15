@@ -40,7 +40,7 @@ const buildHttpRequest = (key?: 'name' | 'email' | 'password' | 'passwordConfirm
   })
 }
 
-const makeSut = (): SutTypes => {
+const makeEmailValidator = (): EmailValidator => {
   function EmailValidatorStub (): EmailValidator {
     return {
       isValid (email: string): boolean {
@@ -49,7 +49,11 @@ const makeSut = (): SutTypes => {
     }
   }
 
-  const emailValidatorStub = EmailValidatorStub()
+  return EmailValidatorStub()
+}
+
+const makeSut = (): SutTypes => {
+  const emailValidatorStub = makeEmailValidator()
   const sut = SignUpController(emailValidatorStub)
 
   return {
