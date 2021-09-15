@@ -5,6 +5,8 @@
   "author": "Pietro Verdile <pietro.verdile@visto.global>",
   "license": "MIT",
   "devDependencies": {
-    "git-commit-msg-linter": "^3.2.8"
+    "@types/node": "^16.9.1",
+    "git-commit-msg-linter": "^3.2.8",
+    "typescript": "^4.4.3"
   }
 }
