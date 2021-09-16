@@ -149,7 +149,7 @@ describe('SignUp Controller', () => {
     expect(isValidSpy).toHaveBeenCalledWith('any_email@mail.com')
   })
 
-  test('should call AddAccount with correct values', async () => {
+  test('should call addAccount with correct values', async () => {
     const { sut, addAccountStub } = makeSut()
     const addSpy = jest.spyOn(addAccountStub, 'add')
     const httpRequest = buildHttpRequest()
@@ -168,7 +168,7 @@ describe('SignUp Controller', () => {
     expect(httpResponse.body).toEqual(new ServerError())
   })
 
-  test('should return 500 if emailValidator throws', async () => {
+  test('should return 500 if addAccount throws', async () => {
     const { sut, addAccountStub } = makeSut()
     jest.spyOn(addAccountStub, 'add').mockImplementation(async () => await Promise.reject(new Error()))
     const httpRequest = buildHttpRequest({ email: 'invalid_email@mail.com' })

@@ -30,6 +30,7 @@ export function SignUpController (emailValidator: EmailValidator, addAccount: Ad
 
         return ok(account)
       } catch (error) {
+        console.error(error)
         return serverError()
       }
     }

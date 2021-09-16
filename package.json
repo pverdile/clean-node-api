@@ -18,7 +18,11 @@
   "scripts": {
     "prepare": "husky install",
     "lint": "ts-standard",
-    "test": "jest --watch",
-    "test:staged": "jest"
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:verbose": "jest --passWithNoTests --runInBand",
+    "test:unit": "yarn test --watch -c jest.unit.config.ts",
+    "test:integration": "yarn test --watch -c jest.integration.config.ts",
+    "test:staged": "yarn test --findRelatedTests .",
+    "test:ci": "yarn test --coverage"
   }
 }
