@@ -1,4 +1,4 @@
-import { emailValidatorAdapter } from './emailValidator'
+import { emailValidatorAdapter } from './emailValidatorAdapter'
 import validator from 'validator'
 import { EmailValidator } from '../presentation/protocols'
 
