@@ -1,6 +1,6 @@
 import { InvalidParamError, MissingParamError } from '../../errors'
-import { badRequest, serverError, ok } from '../../helpers/httpHelpers'
-import { AddAccount, Controller, EmailValidator, HttpRequest, HttpResponse } from './signupProtocols'
+import { badRequest, serverError, ok } from '../../helpers/http-helpers'
+import { AddAccount, Controller, EmailValidator, HttpRequest, HttpResponse } from './signup-protocols'
 
 export function SignUpController (emailValidator: EmailValidator, addAccount: AddAccount): Controller {
   return {
